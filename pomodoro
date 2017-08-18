@@ -1,0 +1,14 @@
+#!/bin/sh
+
+show_usage() {
+  echo "Pomodoro.
+
+Usage: pomodoro [options]
+
+Options:
+-v --version Show version.
+-h --help    Show this screen.
+  "
+}
+
+show_usage
