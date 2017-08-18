@@ -11,4 +11,41 @@ Options:
   "
 }
 
-show_usage
+show_version() {
+  echo "1.0.0"
+}
+
+platform=$(uname | cut -d _ -f 1 | tr '[:upper:]' '[:lower:]')
+
+case "$platform" in
+  "darwin")
+    GETOPT="$(brew --prefix gnu-getopt 2>/dev/null || echo /usr/local)/bin/getopt"
+    ;;
+  *)
+    GETOPT="getopt"
+    ;;
+esac
+
+if ! ARGS=$($GETOPT -o :vh --long version,help -- "$@")
+then
+  show_usage
+fi
+
+eval set -- "$ARGS"
+while [ $# -gt 0 ]
+do
+  case "$1" in
+    -v|--version)
+      show_version
+      exit
+      ;;
+    -h|--help)
+      show_usage
+      exit
+      ;;
+    --)
+      shift
+      break
+      ;;
+  esac
+done
