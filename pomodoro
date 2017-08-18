@@ -17,7 +17,7 @@ show_version() {
 
 countdown() {
   seconds=$(($1 * 60 - 1))
-  while [ $seconds -gt 0 ]
+  while [ $seconds -gt -1 ]
   do
     sleep 1 &
     printf "\r%02d:%02d" $(( (seconds/60)%60)) $((seconds%60))
@@ -27,11 +27,17 @@ countdown() {
   echo
 }
 
+notify() {
+  terminal-notifier -title "$1" -message "$2" -group "me.annema.pomodoro"
+}
+
 start_pomodoro() {
   countdown 25
+  notify "Time to take a break" "Your Pomodoro has finished. Time to take a break."
 
   echo "Pause"
   countdown 5
+  notify "Back to work" "Your break ended. Back to work."
 }
 
 platform=$(uname | cut -d _ -f 1 | tr '[:upper:]' '[:lower:]')
