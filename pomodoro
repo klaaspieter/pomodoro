@@ -15,6 +15,25 @@ show_version() {
   echo "1.0.0"
 }
 
+countdown() {
+  seconds=$(($1 * 60 - 1))
+  while [ $seconds -gt 0 ]
+  do
+    sleep 1 &
+    printf "\r%02d:%02d" $(( (seconds/60)%60)) $((seconds%60))
+    seconds=$((seconds - 1))
+    wait
+  done
+  echo
+}
+
+start_pomodoro() {
+  countdown 25
+
+  echo "Pause"
+  countdown 5
+}
+
 platform=$(uname | cut -d _ -f 1 | tr '[:upper:]' '[:lower:]')
 
 case "$platform" in
@@ -44,8 +63,8 @@ do
       exit
       ;;
     --)
-      shift
-      break
+      start_pomodoro
+      exit
       ;;
   esac
 done
